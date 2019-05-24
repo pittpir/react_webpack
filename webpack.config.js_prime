@@ -1,0 +1,78 @@
+//https://github.com/gaearon/react-hot-loader
+const path = require('path');
+const HtmlWebPackPlugin = require("html-webpack-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
+module.exports = {
+  entry: './src/index.js',
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: [
+        'babel-loader'
+        ] 
+      },
+      {
+        test: /\.(css|scss)$/,
+        exclude: /node_modules/,
+        use: [
+          'style-loader', // creates style nodes from JS strings
+          'css-loader', // translates CSS into CommonJS
+          'sass-loader' // compiles Sass to CSS, using Node Sass by default
+        ]
+      },
+      {
+        test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
+        exclude: /node_modules/,
+        use: [
+          'file-loader'
+        ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        exclude: /node_modules/,
+        use: [
+          'file-loader'
+        ]
+      },
+      {
+        test: /\.html$/,
+        exclude: /node_modules/,
+        use: [
+          'html-loader'
+        ]
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['*', '.js', '.jsx'],
+    alias: {
+      'react-dom': '@hot-loader/react-dom'
+    }
+  },
+  output: {
+    path: path.resolve(__dirname, '/dist'),
+    publicPath: '/',
+    filename: 'bundle.js'
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebPackPlugin({
+      template: "./src/index.html",
+      filename: "./index.html"
+    })
+  ],
+  devServer: {
+    contentBase: './dist',
+    hot: true,
+    compress: true,
+    progress: true,
+    watchContentBase: true,
+    port: 9000
+  }
+};
+
+
+
